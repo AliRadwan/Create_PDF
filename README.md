@@ -10,10 +10,8 @@ there is 2 way
 
 ## Arabic Letter 
  with arabic you must use font type in the assets.
- you can get fonts from here (https://arbfonts.com/hacen-tunisia-font-download.html)
- -[](https://arbfonts.com/hacen-tunisia-font-download.html)
- there is the full documentation
- -[](https://medium.com/@aboayman27x1/flutter-pdf-creation-with-arabic-context-fff4b89f5d4d)
+ -[you can get fonts from here](https://arbfonts.com/hacen-tunisia-font-download.html)
+ -[ there is the full documentation](https://medium.com/@aboayman27x1/flutter-pdf-creation-with-arabic-context-fff4b89f5d4d)
 
 
 This project is a starting point for a Flutter application.
