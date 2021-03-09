@@ -8,6 +8,8 @@ import 'PdfViewerPage.dart';
 
 reportView(context) async {
   final Document pdf = Document();
+  const imageProvider = const   material.AssetImage('assets/image.png');
+
 
   pdf.addPage(MultiPage(
       pageFormat:
@@ -51,7 +53,7 @@ reportView(context) async {
                   PdfLogo(),
                   Text("Ali", textScaleFactor: 2),
 
-                  PdfLogo()
+                  PdfLogo(),
 
 
                 ])),

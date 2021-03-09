@@ -1,14 +1,22 @@
 import 'dart:io';
 
+import 'package:create_pdf_and_save/AyHaga.dart';
 import 'package:create_pdf_and_save/CreateArabicPDF/CreateArabicPdf.dart';
 import 'package:create_pdf_and_save/ScoundWay/reportView.dart';
+import 'package:create_pdf_and_save/resume.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
+import 'package:pdf_flutter/pdf_flutter.dart';
+import 'package:printing/printing.dart';
 
+import 'CreatePdf.dart';
+import 'CreatePdfWidget.dart';
 import 'PdfPreviewScreen.dart';
+import 'PdfPreviewScreen/MyHomePage.dart';
 
 void main() => runApp(MyApp());
 
@@ -29,8 +37,19 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatelessWidget {
 
   final pdf = pw.Document();
+ ImageProvider  imageProvider = const AssetImage('images/sig1.png');
 
-  writeOnPdf(){
+
+
+
+
+
+
+  writeOnPdf()async{
+
+    const imageProvider = const AssetImage('assets/image.png');
+    final image = await flutterImageProvider(imageProvider);
+
     pdf.addPage(
         pw.MultiPage(
           pageFormat: PdfPageFormat.a5,
@@ -42,7 +61,11 @@ class MyHomePage extends StatelessWidget {
                   level: 0,
                   child: pw.Text("Ali Radwan")
               ),
+              
 
+              // pw.Center(
+              //   child: pw.Image(image)
+              // ),
               pw.Paragraph(
                   text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Malesuada fames ac turpis egestas sed tempus urna. Quisque sagittis purus sit amet. A arcu cursus vitae congue mauris rhoncus aenean vel elit. Ipsum dolor sit amet consectetur adipiscing elit pellentesque. Viverra justo nec ultrices dui sapien eget mi proin sed."
               ),
@@ -85,21 +108,52 @@ class MyHomePage extends StatelessWidget {
     file.writeAsBytesSync(pdf.save());
   }
 
+  // Future<void> _saveAsFile({
+  //   BuildContext context,
+  //   LayoutCallback build,
+  //   PdfPageFormat pageFormat,
+  // }) async {
+  //   final bytes = await build(pageFormat);
+  //
+  //   final appDocDir = await getApplicationDocumentsDirectory();
+  //   if (appDocDir == null) {
+  //     return;
+  //   }
+  //   final appDocPath = appDocDir.path;
+  //   final file = File(appDocPath + '/' + 'document.pdf');
+  //   print('Save as file ${file.path} ...');
+  //   await file.writeAsBytes(bytes);
+  //   await OpenFile.open(file.path);
+  // }
+
+
   Widget build(BuildContext context) {
     return Scaffold(
 
+
       appBar: AppBar(
-        title: Text("PDF Flutter")
+        title: Text("PDF Flutter"),
+            leading: IconButton(icon: Icon(Icons.add),onPressed: (){
+             return generateResume;
+            }),
+        actions: [
+    IconButton(icon: Icon(Icons.accessibility_rounded), onPressed: (){
+    // CreatePdfStatefulWidget();
+    Navigator.push(context, MaterialPageRoute(builder: (context)=>CreatePdf()));}
+    ),
+          IconButton(icon: Icon(Icons.animation), onPressed: (){
+            // CreatePdfStatefulWidget();
+            Navigator.push(context, MaterialPageRoute(builder: (context)=>MyPdfPage(title: "ay haga",)));
+          })
+        ],
       ),
+      
 
 
       body: Container(
         width: double.infinity,
         height: double.infinity,
-
-        child: Column(
-
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: ListView(
           children: <Widget>[
             RaisedButton(
               shape: RoundedRectangleBorder(
@@ -118,6 +172,11 @@ class MyHomePage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10)),
               onPressed: (){
                 reportView(context);
+
+                // _saveAsFile(context: context,pageFormat: PdfPageFormat.a4,);
+
+                // generateResume(PdfPageFormat.a4);
+
               },
               color: Color(0xffff9900),
               child: Text(
@@ -125,7 +184,6 @@ class MyHomePage extends StatelessWidget {
                 style: TextStyle(color: Colors.white),
               ),
             ),
-
           ],
         ),
       ),
@@ -134,7 +192,6 @@ class MyHomePage extends StatelessWidget {
         onPressed: ()async{
           writeOnPdf();
           await savePdf();
-
           Directory documentDirectory = await getApplicationDocumentsDirectory();
 
           String documentPath = documentDirectory.path;
