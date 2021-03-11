@@ -132,7 +132,7 @@ class MyHomePage extends StatelessWidget {
 
 
       appBar: AppBar(
-        title: Text("PDF Flutter"),
+        title: Text("PDF Flutter",style: TextStyle(color: Colors.white,fontFamily:"Arial"),),
             leading: IconButton(icon: Icon(Icons.add),onPressed: (){
              return generateResume;
             }),
@@ -159,12 +159,13 @@ class MyHomePage extends StatelessWidget {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10)),
               onPressed: (){
-                return generateAndPrintArabicPdf();
+                return generateAndPrintArabicPdf(details:"2233-444-555",bookNum: "233-444-55-5",replay: "لا يوجد",date: "09/12.2020",subject: "الحمد لله ",
+                    items:['34/44','الحمد لله','لاجراء اللازم','ادارة الحاسب', '10/11' ,'الدعم الفني', '١' ] );
               },
               color: Color(0xffff9900),
               child: Text(
                 'Create Arabic ',
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(color: Colors.white,fontFamily:"Arial"),
               ),
             ),
             RaisedButton(

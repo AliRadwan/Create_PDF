@@ -3,376 +3,197 @@
 
 import 'dart:io';
 
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
-import 'package:pdf/widgets.dart' as pw;
-import 'package:pdf_flutter/pdf_flutter.dart';
+import 'package:pdf/widgets.dart';
 import 'package:printing/printing.dart';
-
-Future<void> generateAndPrintArabicPdf() async {
-  final pw.Document pdf = pw.Document();
-  // PdfImage imageProvider = const AssetImage('assets/images/8.png') as PdfImage;
+import 'package:flutter/material.dart' show AssetImage;
 
 
-  var arabicFont =pw. Font.ttf(await rootBundle.load("assets/fonts/HacenTunisia.ttf"));
+const PdfColor lightGreen = PdfColor.fromInt(0xffcdf1e7);
 
-  final image = pw.MemoryImage(
-    File('test.webp').readAsBytesSync(),
+
+Future<void> generateAndPrintArabicPdf({String details,String bookNum,String replay,String date,String subject,List<String>items,}) async {
+  final Document pdf = Document();
+
+  var arabicFont = Font.ttf(await rootBundle.load("assets/fonts/arabic.ttf"));
+
+
+  // final profileImage = MemoryImage(
+  //   (await rootBundle.load('assets/profile.jpg')).buffer.asUint8List(),
+  // );
+
+  PdfImage logoImage = await pdfImageFromImageProvider(
+    pdf: pdf.document,
+    image: AssetImage('assets/images/logo.png'),
   );
 
 
-  pdf.addPage(pw.Page(
-    margin: pw.EdgeInsets.all(32),
-      theme: pw.ThemeData.withFont(
+  pdf.addPage(Page(
+      theme: ThemeData.withFont(
         base: arabicFont,
       ),
       pageFormat: PdfPageFormat.roll80,
-      build: (pw.Context context) {
-        return pw.Center(
-            child: pw.Column(
+      build: (Context context) {
+        return Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-
-                  pw.Text(":"),
-                  pw.Container(),
-                  pw. Row(
-                      mainAxisAlignment:  pw.MainAxisAlignment.center,
+                  Container(
+                    // width: 100,
+                      height: 100,
+                      child: Image(logoImage),
+                    ),
+                  Container(
+                    height: 20,
+                  ),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                       pw. Directionality(
-                            textDirection: pw.TextDirection.rtl,
-                            child: pw.Center(
-                                child:pw. Text(
-                                    'علي رضوان', style: pw.TextStyle(
+                        Directionality(
+                            textDirection: TextDirection.rtl,
+                            child: Center(
+                                child: Text(
+                                    details, style: TextStyle(
                                   fontSize: 10,
                                 ))
                             )
                         ),
-
-            pw.Text("ddd"),
-                        pw.Container(
-                          // child: pw.Image(imageProvider),
-                        )
+                        Directionality(
+                            textDirection: TextDirection.rtl,
+                            child: Center(
+                                child: Text('التفاصيل الخاصه بالمراسلة رقم : ', style: TextStyle(
+                                  fontSize: 8,
+                                ))
+                            )
+                        ),
                       ]
                   ),
-                  //
-                  // Row(
-                  //     mainAxisAlignment: MainAxisAlignment.center,
-                  //     children: [
-                  //       Directionality(
-                  //           textDirection: TextDirection.rtl,
-                  //           child: Center(
-                  //               child: Text(
-                  //                   'علي رضوان', style: TextStyle(
-                  //                 fontSize: 10,
-                  //               ))
-                  //           )
-                  //       ),
-                  //       Directionality(
-                  //           textDirection: TextDirection.rtl,
-                  //           child: Center(
-                  //               child: Text('الاسم : ', style: TextStyle(
-                  //                 fontSize: 10,
-                  //               ))
-                  //           )
-                  //       ),
-                  //     ]
-                  // ),
-                  // Row(
-                  //     mainAxisAlignment: MainAxisAlignment.center,
-                  //     children: [
-                  //       Directionality(
-                  //           textDirection: TextDirection.rtl,
-                  //           child: Center(
-                  //               child: Text(
-                  //                   ' 01062767789 ', style: TextStyle(
-                  //                 fontSize: 10,
-                  //               ))
-                  //           )
-                  //       ),
-                  //       Directionality(
-                  //           textDirection: TextDirection.rtl,
-                  //           child: Center(
-                  //               child: Text('الرقم الضريبي : ', style: TextStyle(
-                  //                 fontSize: 10,
-                  //               ))
-                  //           )
-                  //       ),
-                  //     ]
-                  // ),
-                  // Row(
-                  //     mainAxisAlignment: MainAxisAlignment.center,
-                  //     children: [
-                  //       Directionality(
-                  //           textDirection: TextDirection.rtl,
-                  //           child: Center(
-                  //               child: Text(
-                  //                   'المنصورة - الدقهلية', style: TextStyle(
-                  //                 fontSize: 10,
-                  //               ))
-                  //           )
-                  //       ),
-                  //       Directionality(
-                  //           textDirection: TextDirection.rtl,
-                  //           child: Center(
-                  //               child: Text('الموقع : ', style: TextStyle(
-                  //                 fontSize: 10,
-                  //               ))
-                  //           )
-                  //       ),
-                  //     ]
-                  // ),
-                  //
-                  // Row(
-                  //     mainAxisAlignment: MainAxisAlignment.center,
-                  //     children: [
-                  //       Directionality(
-                  //           textDirection: TextDirection.rtl,
-                  //           child: Center(
-                  //               child: Text(
-                  //                   '01062767789', style: TextStyle(
-                  //                 fontSize: 10,
-                  //               ))
-                  //           )
-                  //       ),
-                  //       Directionality(
-                  //           textDirection: TextDirection.rtl,
-                  //           child: Center(
-                  //               child: Text('هاتف : ', style: TextStyle(
-                  //                 fontSize: 10,
-                  //               ))
-                  //           )
-                  //       ),
-                  //     ]
-                  // ),
-                  // Row(
-                  //     mainAxisAlignment: MainAxisAlignment.center,
-                  //     children: [
-                  //       Directionality(
-                  //           textDirection: TextDirection.rtl,
-                  //           child: Center(
-                  //               child: Text(
-                  //                   '  1  ', style: TextStyle(
-                  //                 fontSize: 10,
-                  //               ))
-                  //           )
-                  //       ),
-                  //       Directionality(
-                  //           textDirection: TextDirection.rtl,
-                  //           child: Center(
-                  //               child: Text('رقم الفاتورة : ', style: TextStyle(
-                  //                 fontSize: 10,
-                  //               ))
-                  //           )
-                  //       ),
-                  //     ]
-                  // ),
-                  // Row(
-                  //     mainAxisAlignment: MainAxisAlignment.center,
-                  //     children: [
-                  //       Directionality(
-                  //           textDirection: TextDirection.rtl,
-                  //           child: Center(
-                  //               child: Text(
-                  //                   '  علي محمد علي   ', style: TextStyle(
-                  //                 fontSize: 10,
-                  //               ))
-                  //           )
-                  //       ),
-                  //       Directionality(
-                  //           textDirection: TextDirection.rtl,
-                  //           child: Center(
-                  //               child: Text('اسم العميل : ', style: TextStyle(
-                  //                 fontSize: 10,
-                  //               ))
-                  //           )
-                  //       ),
-                  //     ]
-                  // ),
-                  //
-                  // Row(
-                  //     mainAxisAlignment: MainAxisAlignment.center,
-                  //     children: [
-                  //       Directionality(
-                  //           textDirection: TextDirection.rtl,
-                  //           child: Center(
-                  //               child: Text(
-                  //                   '  0506040215 ', style: TextStyle(
-                  //                 fontSize: 10,
-                  //               ))
-                  //           )
-                  //       ),
-                  //       Directionality(
-                  //           textDirection: TextDirection.rtl,
-                  //           child: Center(
-                  //               child: Text('رقم هاتف العميل : ', style: TextStyle(
-                  //                 fontSize: 10,
-                  //               ))
-                  //           )
-                  //       ),
-                  //     ]
-                  // ),
-                  //
-                  // Directionality(
-                  //     textDirection: TextDirection.rtl,
-                  //     child: Text('المشتريات' , style: TextStyle(
-                  //         fontSize: 10
-                  //     ))
-                  // ),
-                  // Container(
-                  //   margin: EdgeInsets.fromLTRB(22, 5, 22, 5),
-                  //   child: Directionality(
-                  //     textDirection: TextDirection.rtl,
-                  //     child: Table.fromTextArray(
-                  //       headerStyle: TextStyle(
-                  //           fontSize: 6
-                  //       ),
-                  //       headers: <dynamic>['الإجمالي', 'العدد' ,'الخدمة', 'القطعة'],
-                  //       cellAlignment: Alignment.center,
-                  //       cellStyle: TextStyle(
-                  //           fontSize: 5
-                  //       ),
-                  //       data:  <List<dynamic>>[
-                  //         <dynamic>['50', '10' ,'كوي', 'قميص' ],
-                  //       ],
-                  //     ),
-                  //   ),
-                  // ),
-                  // Row(
-                  //     mainAxisAlignment: MainAxisAlignment.center,
-                  //     children: [
-                  //       Directionality(
-                  //           textDirection: TextDirection.rtl,
-                  //           child: Center(
-                  //               child: Text(
-                  //                   '  50  ', style: TextStyle(
-                  //                 fontSize: 10,
-                  //               ))
-                  //           )
-                  //       ),
-                  //       Directionality(
-                  //           textDirection: TextDirection.rtl,
-                  //           child: Center(
-                  //               child: Text('المجموع الفرعي : ', style: TextStyle(
-                  //                 fontSize: 10,
-                  //               ))
-                  //           )
-                  //       ),
-                  //     ]
-                  // ),
-                  // Row(
-                  //     mainAxisAlignment: MainAxisAlignment.center,
-                  //     children: [
-                  //       Directionality(
-                  //           textDirection: TextDirection.rtl,
-                  //           child: Center(
-                  //               child: Text(
-                  //                   '  -20  ',
-                  //                   style: TextStyle(
-                  //                     fontSize: 10,
-                  //                   ))
-                  //           )
-                  //       ),
-                  //       Directionality(
-                  //           textDirection: TextDirection.rtl,
-                  //           child: Center(
-                  //               child: Text('خصم العميل : ', style: TextStyle(
-                  //                 fontSize: 10,
-                  //               ))
-                  //           )
-                  //       ),
-                  //     ]
-                  // ),
-                  // Row(
-                  //     mainAxisAlignment: MainAxisAlignment.center,
-                  //     children: [
-                  //       Directionality(
-                  //           textDirection: TextDirection.rtl,
-                  //           child: Center(
-                  //               child: Text(
-                  //                   '  1  ', style: TextStyle(
-                  //                 fontSize: 10,
-                  //               ))
-                  //           )
-                  //       ),
-                  //       Directionality(
-                  //           textDirection: TextDirection.rtl,
-                  //           child: Center(
-                  //               child: Text('خصم عددي : ', style: TextStyle(
-                  //                 fontSize: 10,
-                  //               ))
-                  //           )
-                  //       ),
-                  //     ]
-                  // ),
-                  // Row(
-                  //     mainAxisAlignment: MainAxisAlignment.center,
-                  //     children: [
-                  //       Directionality(
-                  //           textDirection: TextDirection.rtl,
-                  //           child: Center(
-                  //               child: Text(
-                  //                   '  29  ', style: TextStyle(
-                  //                 fontSize: 10,
-                  //               ))
-                  //           )
-                  //       ),
-                  //       Directionality(
-                  //           textDirection: TextDirection.rtl,
-                  //           child: Center(
-                  //               child: Text('الإجمالي : ', style: TextStyle(
-                  //                 fontSize: 10,
-                  //               ))
-                  //           )
-                  //       ),
-                  //     ]
-                  // ),
-                  // Row(
-                  //     mainAxisAlignment: MainAxisAlignment.center,
-                  //     children: [
-                  //       Directionality(
-                  //           textDirection: TextDirection.rtl,
-                  //           child: Center(
-                  //               child: Text(
-                  //                   '  مدفوعة  ',
-                  //                   style: TextStyle(
-                  //                     fontSize: 10,
-                  //                   ))
-                  //           )
-                  //       ),
-                  //       Directionality(
-                  //           textDirection: TextDirection.rtl,
-                  //           child: Center(
-                  //               child: Text('حالة الفاتورة : ', style: TextStyle(
-                  //                 fontSize: 10,
-                  //               ))
-                  //           )
-                  //       ),
-                  //     ]
-                  // ),
-                  // Row(
-                  //     mainAxisAlignment: MainAxisAlignment.center,
-                  //     children: [
-                  //       Directionality(
-                  //           textDirection: TextDirection.rtl,
-                  //           child: Center(
-                  //               child: Text(
-                  //                   '  نقدا  ',
-                  //                   style: TextStyle(
-                  //                     fontSize: 10,
-                  //                   ))
-                  //           )
-                  //       ),
-                  //       Directionality(
-                  //           textDirection: TextDirection.rtl,
-                  //           child: Center(
-                  //               child: Text('طريقة الدفع : ', style: TextStyle(
-                  //                 fontSize: 10,
-                  //               ))
-                  //           )
-                  //       ),
-                  //     ]
-                  // ),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Directionality(
+                            textDirection: TextDirection.rtl,
+                            child: Center(
+                                child: Text(
+                                    bookNum, style: TextStyle(
+                                  fontSize: 6,
+                                ))
+                            )
+                        ),
+                        Directionality(
+                            textDirection: TextDirection.rtl,
+                            child: Center(
+                                child: Text('رقم الكتاب : ', style: TextStyle(
+                                  fontSize: 6,
+                                ))
+                            )
+                        ),
+
+                        Text('      ',),
+                        Directionality(
+                            textDirection: TextDirection.rtl,
+                            child: Center(
+                                child: Text(
+                                    replay, style: TextStyle(
+                                  fontSize: 6,
+                                ))
+                            )
+                        ),
+                        Directionality(
+                            textDirection: TextDirection.rtl,
+                            child: Center(
+                                child: Text('ردا علي / الحاق : ', style: TextStyle(
+                                  fontSize: 6,
+                                ))
+                            )
+                        ),
+                      ]
+                  ),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Directionality(
+                            textDirection: TextDirection.rtl,
+                            child: Center(
+                                child: Text(
+                                    date, style: TextStyle(
+                                  fontSize: 6,
+                                ))
+                            )
+                        ),
+                        Directionality(
+                            textDirection: TextDirection.rtl,
+                            child: Center(
+                                child: Text('تاريخ الارسال : ', style: TextStyle(
+                                  fontSize: 6,
+                                ))
+                            )
+                        ),
+
+                        Text('      ',),
+
+                        Directionality(
+                            textDirection: TextDirection.rtl,
+                            child: Center(
+                                child: Text(
+                                    subject, style: TextStyle(
+                                  fontSize: 6,
+                                ))
+                            )
+                        ),
+                        Directionality(
+                            textDirection: TextDirection.rtl,
+                            child: Center(
+                                child: Text('الموضوع : ', style: TextStyle(
+                                  fontSize: 6,
+                                ))
+                            )
+                        ),
+                      ]
+                  ),
+
+                  Container(
+                    margin: EdgeInsets.fromLTRB(22, 5, 22, 5),
+                    child: Directionality(
+                      textDirection: TextDirection.rtl,
+                      child: Table.fromTextArray(
+                        headerStyle: TextStyle(fontSize: 6),headerAlignment: Alignment.center,
+                        headers: <dynamic>['حالة الاطلاع','ملاحظات','الاجراء', 'الي' ,'تاريخ الارسال', 'من','م'],
+                        cellAlignment: Alignment.center,
+                        cellStyle: TextStyle(fontSize: 4),
+                        data:
+                        <List<dynamic>>[
+                          items,items,items
+                          // <dynamic>['34/44','الحمد لله','لاجراء اللازم','ادارة الحاسب', '10/11' ,'الدعم الفني', '١' ],
+                        ],
+                      ),
+                    ),
+                  ),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Directionality(
+                            textDirection: TextDirection.rtl,
+                            child: Center(
+                                child: Text(
+                                    '  نقدا  ',
+                                    style: TextStyle(
+                                      fontSize: 10,
+                                    ))
+                            )
+                        ),
+                        Directionality(
+                            textDirection: TextDirection.rtl,
+                            child: Center(
+                                child: Text('طريقة الدفع : ', style: TextStyle(
+                                  fontSize: 10,
+                                ))
+                            )
+                        ),
+                      ]
+                  ),
                 ]
             )
         );

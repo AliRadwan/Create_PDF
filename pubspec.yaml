@@ -58,6 +58,10 @@ flutter:
       fonts:
         - asset: assets/fonts/Cairo-Regular.ttf
 
+
+    - family: Arial
+      fonts:
+        - asset: assets/fonts/Arial.ttf
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
